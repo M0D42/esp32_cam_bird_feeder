@@ -28,6 +28,9 @@
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 //this are the parameter of the camera this allow you to change some seting like chaning jpeg
+
+
+camera_config_t config;
 void camaras_parameter(){
     config.ledc_channel = LEDC_CHANNEL_0;
     config.ledc_timer = LEDC_TIMER_0;
