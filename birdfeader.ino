@@ -68,7 +68,7 @@ if(!SD_MMC.begin()){
   }
 }
 
-void saveImage(){
+void saveImage(camera_fb_t * fb){
     EEPROM.begin(EEPROM_SIZE);
     pictureNumber = EEPROM.read(0) + 1;
 
@@ -95,14 +95,14 @@ void saveImage(){
 }
 
 void takepicture(){
-        camera_fb_t * fb = NULL;
+    camera_fb_t * fb = NULL;
     // Take Picture with Camera
     fb = esp_camera_fb_get();  
     if(!fb) {
-    Serial.println("Camera capture failed");
-    return;
+        Serial.println("Camera capture failed");
+        return;
     }
-    saveImage();
+    saveImage(fb);
 }
 void setup(){
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
