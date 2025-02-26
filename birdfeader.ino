@@ -29,7 +29,7 @@
 #define PCLK_GPIO_NUM     22
 //this are the parameter of the camera this allow you to change some seting like chaning jpeg
 
-
+int pictureNumber = 0;
 camera_config_t config;
 void camaras_parameter(){
     config.ledc_channel = LEDC_CHANNEL_0;
