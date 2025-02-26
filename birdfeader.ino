@@ -129,5 +129,6 @@ sdcardinit();
 }
 
 void loop(){
-
+takepicture();
+    delay(5000); // Take a picture every 5 seconds
 }
