@@ -88,7 +88,6 @@ void saveImage(){
     file.close();
     esp_camera_fb_return(fb); 
     
-    // Turns off the ESP32-CAM white on-board LED (flash) connected to GPIO 4
 }
 
 void takepicture(){
