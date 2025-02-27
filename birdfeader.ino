@@ -6,8 +6,12 @@
 #include "soc/rtc_cntl_reg.h"  // Disable brownour problems
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
+#include "driver/rtc_io.h"
 // define the number of bytes you want to access
 #define EEPROM_SIZE 1
+//deepsleep button
+
+
 
 // Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -28,7 +32,6 @@
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 //this are the parameter of the camera this allow you to change some seting like chaning jpeg
-
 int pictureNumber = 0;
 camera_config_t config;
 void camaras_parameter(){
@@ -81,8 +84,7 @@ void saveImage(camera_fb_t * fb){
     File file = fs.open(path.c_str(), FILE_WRITE);
     if(!file){
       Serial.println("Failed to open file in writing mode");
-    } 
-    else {
+    } else {
       file.write(fb->buf, fb->len); // payload (image), payload length
       Serial.printf("Saved file to path: %s\n", path.c_str());
       EEPROM.write(0, pictureNumber);
@@ -92,10 +94,10 @@ void saveImage(camera_fb_t * fb){
     esp_camera_fb_return(fb); 
 
     // Turns off the ESP32-CAM white on-board LED (flash) connected to GPIO 4
-}
+ }
 
 void takepicture(){
-    camera_fb_t * fb = NULL;
+    camera_fb_t * fb = NULL;  
     // Take Picture with Camera
     fb = esp_camera_fb_get();  
     if(!fb) {
@@ -104,11 +106,14 @@ void takepicture(){
     }
     saveImage(fb);
 }
+
+
+
 void setup(){
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
     Serial.begin(115200);
     camaras_parameter;
-
+    pinMode(pir, INPUT);
     //if your esp32 has more ram you can use this to take better pictures
     if(psramFound()){
         config.frame_size = FRAMESIZE_UXGA; // FRAMESIZE_ + QVGA|CIF|VGA|SVGA|XGA|SXGA|UXGA
@@ -127,8 +132,7 @@ if (err != ESP_OK) {
 }
 sdcardinit();
 }
-
 void loop(){
 takepicture();
-    delay(5000); // Take a picture every 5 seconds
+delay(5000); // Take a picture every 5 seconds
 }
